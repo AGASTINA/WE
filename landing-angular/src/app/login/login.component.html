@@ -1,0 +1,107 @@
+<div class="login-container">
+  <!-- Background gradient -->
+  <div class="background"></div>
+
+  <!-- Login Card -->
+  <div class="login-card">
+    <div class="card-content">
+      <!-- Header -->
+      <h1 class="card-title">Welcome Back</h1>
+      <p class="card-subtitle">Sign in to continue</p>
+
+      <!-- Success Message -->
+      <div *ngIf="successMessage" class="alert alert-success fade-in">
+        <span class="alert-icon">✓</span>
+        <span class="alert-text">{{ successMessage }}</span>
+      </div>
+
+      <!-- Error Message -->
+      <div *ngIf="errorMessage" class="alert alert-error fade-in">
+        <span class="alert-icon">✕</span>
+        <span class="alert-text">{{ errorMessage }}</span>
+      </div>
+
+      <!-- Form -->
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form" novalidate>
+        
+        <!-- Email Field -->
+        <div class="form-group">
+          <label for="email" class="form-label">Email Address</label>
+          <div class="input-container">
+            <span class="input-icon">✉️</span>
+            <input
+              type="email"
+              id="email"
+              formControlName="email"
+              class="form-input"
+              [class.input-error]="hasError('email')"
+              [class.input-success]="!hasError('email') && loginForm.get('email')?.value"
+              placeholder="you@example.com"
+              aria-label="Email Address"
+            />
+            <span *ngIf="!hasError('email') && loginForm.get('email')?.value" class="input-check">✓</span>
+          </div>
+          <div *ngIf="hasError('email')" class="error-message">
+            <span class="error-icon">⚠</span>
+            <span>{{ getErrorMessage('email') }}</span>
+          </div>
+        </div>
+
+        <!-- Password Field -->
+        <div class="form-group">
+          <label for="password" class="form-label">Password</label>
+          <div class="input-container">
+            <span class="input-icon">🔒</span>
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              id="password"
+              formControlName="password"
+              class="form-input"
+              [class.input-error]="hasError('password')"
+              [class.input-success]="!hasError('password') && loginForm.get('password')?.value"
+              placeholder="Enter your password"
+              aria-label="Password"
+            />
+            <button
+              type="button"
+              class="toggle-btn"
+              (click)="togglePasswordVisibility()"
+              [attr.aria-pressed]="showPassword"
+              aria-label="Toggle password visibility"
+            >
+              {{ showPassword ? '👁️' : '👁️‍🗨️' }}
+            </button>
+          </div>
+          <div *ngIf="hasError('password')" class="error-message">
+            <span class="error-icon">⚠</span>
+            <span>{{ getErrorMessage('password') }}</span>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          class="submit-btn"
+          [disabled]="loginForm.invalid || loading"
+          [class.loading-state]="loading"
+        >
+          <span *ngIf="!loading" class="btn-text">Sign In</span>
+          <span *ngIf="loading" class="btn-text loading-text">
+            <span class="spinner"></span>
+            Signing In...
+          </span>
+        </button>
+      </form>
+
+      <!-- Signup Link -->
+      <div class="signup-footer">
+        <p class="signup-text">
+          Don't have an account?
+          <button type="button" class="signup-link" (click)="navigateToSignup()">
+            Sign Up
+          </button>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
